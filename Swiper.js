@@ -248,12 +248,13 @@ class Swiper extends Component {
       isSwipingBottom,
     } = this.getSwipeDirection(this._animatedValueX, this._animatedValueY);
 
-    return (
+    return [
       (isSwipingLeft && !disableLeftSwipe) ||
-      (isSwipingRight && !disableRightSwipe) ||
-      (isSwipingTop && !disableTopSwipe) ||
-      (isSwipingBottom && !disableBottomSwipe)
-    );
+        (isSwipingRight && !disableRightSwipe) ||
+        (isSwipingTop && !disableTopSwipe) ||
+        (isSwipingBottom && !disableBottomSwipe),
+      isSwipingRight && disableRightSwipe,
+    ];
   };
 
   onPanResponderRelease = (e, gestureState) => {
@@ -280,7 +281,9 @@ class Swiper extends Component {
       animatedValueX > horizontalThreshold ||
       animatedValueY > verticalThreshold;
 
-    if (isSwiping && this.validPanResponderRelease()) {
+    const validRelease = this.validPanResponderRelease();
+
+    if (isSwiping && validRelease[0]) {
       const onSwipeDirectionCallback = this.getOnSwipeDirectionCallback(
         this._animatedValueX,
         this._animatedValueY
@@ -288,7 +291,7 @@ class Swiper extends Component {
 
       this.swipeCard(onSwipeDirectionCallback);
     } else {
-      this.resetTopCard();
+      this.resetTopCard(validRelease[1]);
     }
 
     if (!this.state.slideGesture) {
@@ -358,7 +361,7 @@ class Swiper extends Component {
     return { isSwipingLeft, isSwipingRight, isSwipingTop, isSwipingBottom };
   };
 
-  resetTopCard = (cb) => {
+  resetTopCard = (rightAborted, cb) => {
     Animated.spring(this.state.pan, {
       toValue: 0,
       friction: this.props.topCardResetAnimationFriction,
@@ -370,7 +373,9 @@ class Swiper extends Component {
       y: 0,
     });
 
-    this.props.onSwipedAborted();
+    rightAborted
+      ? this.props.onSwipedRightAborted()
+      : this.props.onSwipedAborted();
   };
 
   swipeBack = (cb) => {
@@ -936,6 +941,7 @@ Swiper.propTypes = {
   marginTop: PropTypes.number,
   onSwiped: PropTypes.func,
   onSwipedAborted: PropTypes.func,
+  onSwipedRightAborted: PropTypes.func,
   onSwipedAll: PropTypes.func,
   onSwipedBottom: PropTypes.func,
   onSwipedLeft: PropTypes.func,
@@ -1020,6 +1026,7 @@ Swiper.defaultProps = {
   marginTop: 0,
   onSwiped: (cardIndex) => {},
   onSwipedAborted: () => {},
+  onSwipedRightAborted: () => {},
   onSwipedAll: () => {},
   onSwipedBottom: (cardIndex) => {},
   onSwipedLeft: (cardIndex) => {},
