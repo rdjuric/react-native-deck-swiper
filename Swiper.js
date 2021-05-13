@@ -161,10 +161,8 @@ class Swiper extends Component {
   onPanResponderMove = (event, gestureState) => {
     this.props.onSwiping(this._animatedValueX, this._animatedValueY);
 
-    let {
-      overlayOpacityHorizontalThreshold,
-      overlayOpacityVerticalThreshold,
-    } = this.props;
+    let { overlayOpacityHorizontalThreshold, overlayOpacityVerticalThreshold } =
+      this.props;
     if (!overlayOpacityHorizontalThreshold) {
       overlayOpacityHorizontalThreshold = this.props.horizontalThreshold;
     }
@@ -241,12 +239,8 @@ class Swiper extends Component {
       disableTopSwipe,
     } = this.props;
 
-    const {
-      isSwipingLeft,
-      isSwipingRight,
-      isSwipingTop,
-      isSwipingBottom,
-    } = this.getSwipeDirection(this._animatedValueX, this._animatedValueY);
+    const { isSwipingLeft, isSwipingRight, isSwipingTop, isSwipingBottom } =
+      this.getSwipeDirection(this._animatedValueX, this._animatedValueY);
 
     return [
       (isSwipingLeft && !disableLeftSwipe) ||
@@ -290,6 +284,7 @@ class Swiper extends Component {
       );
 
       this.swipeCard(onSwipeDirectionCallback);
+      return;
     } else {
       this.resetTopCard(validRelease[1]);
     }
@@ -305,19 +300,11 @@ class Swiper extends Component {
   };
 
   getOnSwipeDirectionCallback = (animatedValueX, animatedValueY) => {
-    const {
-      onSwipedLeft,
-      onSwipedRight,
-      onSwipedTop,
-      onSwipedBottom,
-    } = this.props;
+    const { onSwipedLeft, onSwipedRight, onSwipedTop, onSwipedBottom } =
+      this.props;
 
-    const {
-      isSwipingLeft,
-      isSwipingRight,
-      isSwipingTop,
-      isSwipingBottom,
-    } = this.getSwipeDirection(animatedValueX, animatedValueY);
+    const { isSwipingLeft, isSwipingRight, isSwipingTop, isSwipingBottom } =
+      this.getSwipeDirection(animatedValueX, animatedValueY);
 
     if (isSwipingRight) {
       return onSwipedRight;
@@ -337,12 +324,8 @@ class Swiper extends Component {
   };
 
   mustDecrementCardIndex = (animatedValueX, animatedValueY) => {
-    const {
-      isSwipingLeft,
-      isSwipingRight,
-      isSwipingTop,
-      isSwipingBottom,
-    } = this.getSwipeDirection(animatedValueX, animatedValueY);
+    const { isSwipingLeft, isSwipingRight, isSwipingTop, isSwipingBottom } =
+      this.getSwipeDirection(animatedValueX, animatedValueY);
 
     return (
       (isSwipingLeft && this.props.goBackToPreviousCardOnSwipeLeft) ||
@@ -445,6 +428,7 @@ class Swiper extends Component {
       },
       duration: this.props.swipeAnimationDuration,
     }).start(() => {
+      this.setState({ labelType: LABEL_TYPES.NONE });
       this.setSwipeBackCardXY(x, y, () => {
         mustDecrementCardIndex = mustDecrementCardIndex
           ? true
@@ -598,10 +582,8 @@ class Swiper extends Component {
   };
 
   resetPanAndScale = () => {
-    const {
-      previousCardDefaultPositionX,
-      previousCardDefaultPositionY,
-    } = this.props;
+    const { previousCardDefaultPositionX, previousCardDefaultPositionY } =
+      this.props;
     this.state.pan.setValue({ x: 0, y: 0 });
     this.state.previousCardX.setValue(previousCardDefaultPositionX);
     this.state.previousCardY.setValue(previousCardDefaultPositionY);
@@ -609,10 +591,8 @@ class Swiper extends Component {
 
   calculateNextPreviousCardPosition = () => {
     const { swipeBackXYPositions } = this.state;
-    let {
-      previousCardDefaultPositionX: x,
-      previousCardDefaultPositionY: y,
-    } = this.props;
+    let { previousCardDefaultPositionX: x, previousCardDefaultPositionY: y } =
+      this.props;
     const swipeBackPosition = swipeBackXYPositions.splice(-1, 1);
     if (swipeBackPosition[0]) {
       x = swipeBackPosition[0].x;
