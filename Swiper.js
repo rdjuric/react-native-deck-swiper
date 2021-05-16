@@ -220,8 +220,8 @@ class Swiper extends Component {
     this.props.dragStart && this.props.dragStart();
     if (!this.state.panResponderLocked) {
       this.state.pan.setOffset({
-        x: this._animatedValueX,
-        y: this._animatedValueY,
+        x: 0,
+        y: 0,
       });
     }
 
