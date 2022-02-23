@@ -185,7 +185,7 @@ class Swiper extends Component {
 			});
 		}
 
-		return Animated.event([ null, this.createAnimatedEvent() ])(event, gestureState);
+		return Animated.event([ null, this.createAnimatedEvent() ], { useNativeDriver: false })(event, gestureState);
 	};
 
 	onPanResponderGrant = (event, gestureState) => {
@@ -316,6 +316,7 @@ class Swiper extends Component {
 
 	resetTopCard = (rightAborted, cb) => {
 		Animated.spring(this.state.pan, {
+			useNativeDriver: true,
 			toValue: 0,
 			friction: this.props.topCardResetAnimationFriction,
 			tension: this.props.topCardResetAnimationTension
@@ -361,6 +362,7 @@ class Swiper extends Component {
 		this.setState({ panResponderLocked: true });
 		this.animateStack();
 		Animated.timing(this.state.pan, {
+			useNativeDriver: true,
 			toValue: {
 				x: x * SWIPE_MULTIPLY_FACTOR,
 				y: y * SWIPE_MULTIPLY_FACTOR
@@ -694,6 +696,7 @@ class Swiper extends Component {
 		const renderOverlayLabel = this.renderOverlayLabel();
 		renderedCards.push(
 			<Animated.View
+				useNativeDriver={true}
 				key={key}
 				style={firstCard ? swipableCardStyle : stackCardZoomStyle}
 				{...this._panResponder.panHandlers}
@@ -737,7 +740,7 @@ class Swiper extends Component {
 		const key = this.getCardKey(cards[previousCardIndex], previousCardIndex);
 
 		return (
-			<Animated.View key={key} style={previousCardStyle}>
+			<Animated.View key={key} style={previousCardStyle} useNativeDriver={true}>
 				{previousCard}
 			</Animated.View>
 		);
@@ -760,7 +763,7 @@ class Swiper extends Component {
 		}
 
 		return (
-			<Animated.View style={this.calculateOverlayLabelWrapperStyle()}>
+			<Animated.View useNativeDriver={true} style={this.calculateOverlayLabelWrapperStyle()}>
 				{!overlayLabels[labelType].element && (
 					<Text style={this.calculateOverlayLabelStyle()}>{overlayLabels[labelType].title}</Text>
 				)}
