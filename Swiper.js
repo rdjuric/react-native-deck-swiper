@@ -397,16 +397,16 @@ class Swiper extends Component {
 				toValue: 0,
 				friction: this.props.stackAnimationFriction,
 				tension: this.props.stackAnimationTension,
-				restSpeedThreshold: 50,
-				restDisplacementThreshold: 5,
+				restSpeedThreshold: 20,
+				restDisplacementThreshold: 3,
 				useNativeDriver: true
 			}),
 			Animated.spring(this.state.previousCardY, {
 				toValue: 0,
 				friction: this.props.stackAnimationFriction,
 				tension: this.props.stackAnimationTension,
-				restSpeedThreshold: 50,
-				restDisplacementThreshold: 5,
+				restSpeedThreshold: 20,
+				restDisplacementThreshold: 3,
 				useNativeDriver: true
 			})
 		]).start(() => {
