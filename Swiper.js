@@ -204,7 +204,7 @@ class Swiper extends Component {
 	};
 
 	validPanResponderRelease = () => {
-		const { disableBottomSwipe, disableLeftSwipe, disableRightSwipe, disableTopSwipe } = this.props;
+		const { disableBottomSwipe, disableLeftSwipe, disableRightSwipe, disableTopSwipe, cards } = this.props;
 
 		const { isSwipingLeft, isSwipingRight, isSwipingTop, isSwipingBottom } = this.getSwipeDirection(
 			this._animatedValueX,
@@ -213,10 +213,10 @@ class Swiper extends Component {
 
 		return [
 			(isSwipingLeft && !disableLeftSwipe) ||
-				(isSwipingRight && !disableRightSwipe()) ||
+				(isSwipingRight && !disableRightSwipe(cards[this.state.firstCardIndex].isBoosted)) ||
 				(isSwipingTop && !disableTopSwipe) ||
 				(isSwipingBottom && !disableBottomSwipe),
-			isSwipingRight && disableRightSwipe()
+			isSwipingRight && disableRightSwipe(cards[this.state.firstCardIndex].isBoosted)
 		];
 	};
 
@@ -751,15 +751,22 @@ class Swiper extends Component {
 	};
 
 	renderOverlayLabel = () => {
-		const { disableBottomSwipe, disableLeftSwipe, disableRightSwipe, disableTopSwipe, overlayLabels } = this.props;
+		const {
+			disableBottomSwipe,
+			disableLeftSwipe,
+			disableRightSwipe,
+			disableTopSwipe,
+			overlayLabels,
+			cards
+		} = this.props;
 
-		const { labelType } = this.state;
+		const { labelType, firstCardIndex } = this.state;
 
 		const labelTypeNone = labelType === LABEL_TYPES.NONE;
 		const directionSwipeLabelDisabled =
 			(labelType === LABEL_TYPES.BOTTOM && disableBottomSwipe) ||
 			(labelType === LABEL_TYPES.LEFT && disableLeftSwipe) ||
-			(labelType === LABEL_TYPES.RIGHT && disableRightSwipe()) ||
+			(labelType === LABEL_TYPES.RIGHT && disableRightSwipe(cards[firstCardIndex].isBoosted)) ||
 			(labelType === LABEL_TYPES.TOP && disableTopSwipe);
 
 		if (!overlayLabels || !overlayLabels[labelType] || labelTypeNone || directionSwipeLabelDisabled) {
@@ -868,7 +875,7 @@ Swiper.defaultProps = {
 	containerStyle: {},
 	disableBottomSwipe: false,
 	disableLeftSwipe: false,
-	disableRightSwipe: () => {},
+	disableRightSwipe: (isBoosted) => {},
 	disableTopSwipe: false,
 	horizontalSwipe: true,
 	horizontalThreshold: width / 4,
