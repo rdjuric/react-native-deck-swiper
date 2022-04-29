@@ -342,6 +342,10 @@ class Swiper extends Component {
 		});
 	};
 
+	getCurrentIndex = () => {
+		return this.state.firstCardIndex;
+	};
+
 	swipeLeft = (mustDecrementCardIndex = false) => {
 		this.swipeCard(this.props.onSwipedLeft, -this.props.horizontalThreshold, 0, mustDecrementCardIndex);
 	};
