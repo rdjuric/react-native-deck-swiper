@@ -15,6 +15,7 @@ const LABEL_TYPES = {
 	BOTTOM: 'bottom'
 };
 const SWIPE_MULTIPLY_FACTOR = 4.5;
+let subscription = null;
 
 const calculateCardIndexes = (firstCardIndex, cards) => {
 	firstCardIndex = firstCardIndex || 0;
@@ -80,7 +81,7 @@ class Swiper extends Component {
 		this._mounted = false;
 		this.state.pan.x.removeAllListeners();
 		this.state.pan.y.removeAllListeners();
-		Dimensions.removeEventListener('change', this.onDimensionsChange);
+		subscription.remove();
 	};
 
 	getCardStyle = () => {
@@ -100,7 +101,7 @@ class Swiper extends Component {
 
 	initializeCardStyle = () => {
 		// this.forceUpdate()
-		Dimensions.addEventListener('change', this.onDimensionsChange);
+		subscription = Dimensions.addEventListener('change', this.onDimensionsChange);
 	};
 
 	initializePanResponder = () => {
