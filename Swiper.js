@@ -67,6 +67,7 @@ class Swiper extends Component {
 
 	shouldComponentUpdate = (nextProps, nextState) => {
 		const { props, state } = this;
+		const backgroundColorChanged = props.backgroundColor !== nextProps.backgroundColor;
 		const propsChanged = !isEqual(props.cards, nextProps.cards) || props.cardIndex !== nextProps.cardIndex;
 		const stateChanged =
 			nextState.firstCardIndex !== state.firstCardIndex ||
@@ -74,9 +75,9 @@ class Swiper extends Component {
 			nextState.previousCardIndex !== state.previousCardIndex ||
 			nextState.labelType !== state.labelType ||
 			nextState.swipedAllCards !== state.swipedAllCards;
-		return propsChanged || stateChanged;
+		return propsChanged || stateChanged || backgroundColorChanged;
 	};
-
+	
 	componentWillUnmount = () => {
 		this._mounted = false;
 		this.state.pan.x.removeAllListeners();
